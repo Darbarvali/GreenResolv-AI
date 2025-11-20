@@ -48,47 +48,8 @@ GreenResolv is an AI-powered L1 Developer Support Agent that:
 ---
 
 ## ⚙️ **ARCHITECTURE**
-<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/48f856b5-746e-4ab7-b2e7-98daabc16278" />
-flowchart TD
-
-    subgraph UI["🖥️ Streamlit Frontend (Cloud Run • us-east1)"]
-        A["User Query\nChat Input"]
-        B["Streamlit App\n(main.py)"]
-    end
-
-    subgraph Agent["🧠 RAG Agent (LangChain)"]
-        C["ChatVertexAI\nGemini 2.0 Flash"]
-        D["Vector Search Tool\n(search_past_solutions)"]
-        E["Conversation Memory\n(ConversationBufferMemory)"]
-    end
-
-    subgraph Embeddings["🔡 Embeddings Service"]
-        F["VertexAIEmbeddings\ntext-embedding-005"]
-    end
-
-    subgraph DB["🗄️ Cloud SQL (PostgreSQL 15)\n• pgvector\n• tickets_db.table: ticket_vectors"]
-        G["PostgresEngine\n+ VectorStore"]
-    end
-
-    subgraph Admin["⚙️ Admin Panel (Streamlit Sidebar)"]
-        H["Reset Knowledge Base\nDrop + Recreate Table"]
-        I["JSON Loader\n(past_tickets.json)"]
-    end
-
-    %% Flow
-    A --> B --> C
-    B --> D
-    C --> D
-    D --> G
-    B --> F
-    F --> G
-
-    H --> G
-    I --> G
-
-    G --> D
-    D --> C
-    C --> B --> A
+<img   height="1000" alt="image" src="https://github.com/user-attachments/assets/48f856b5-746e-4ab7-b2e7-98daabc16278" />
+ 
 
 
 
@@ -128,11 +89,11 @@ flowchart TD
 ### 1. Clone Repo
 ```bash
 git clone https://github.com/Darbarvali/GreenResolv-AI.git
-cd GreenResolv-AI
+cd GreenResolv-AI 
 
 
 
-2. Environment Setup
+### 2. Environment Setup
 
 # Install dependencies
 pip install -r requirements.txt
@@ -165,7 +126,7 @@ gcloud run deploy greenresolv-ui \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars GCP_PROJECT=$PROJECT_ID
+  --set-env-vars GCP_PROJECT=$PROJECT_ID ```
 
 
 🧠 Technical Challenges & Solutions
