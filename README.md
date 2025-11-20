@@ -113,15 +113,16 @@ streamlit run app.py
 gcloud run deploy greenresolv-ui   --source .   --region us-central1   --allow-unauthenticated   --set-env-vars GCP_PROJECT=$PROJECT_ID
 ```
 
-🚢 Deployment (Google Cloud Run)
+## 🚢 Deployment (Google Cloud Run)
 
 We utilize a simplified deployment pipeline that builds the container and deploys it in one step:
-
+```bash
 gcloud run deploy greenresolv-ui \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars GCP_PROJECT=$PROJECT_ID ```
+  --set-env-vars GCP_PROJECT=$PROJECT_ID
+```
 
 
 ## 🧠 Technical Challenges & Solutions
@@ -140,7 +141,10 @@ Solution: We built a "Self-Healing" ingestion pipeline. The Admin "Reset" button
 - GitHub Webhooks  
 - Multimodal screenshot support  
 - Slack bot integration  
-- Auto‑tuned retrieval  
+- Auto‑tuned retrieval
+
+## 🌍 Live Deployment
+**App URL:** https://greenresolv-ui-12345.a.run.app
 
 
 Built with ❤️ for the BNB Marathon 2025.
