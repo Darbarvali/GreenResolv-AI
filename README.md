@@ -1,115 +1,91 @@
-🛡️ GreenResolv AI: Intelligent Developer Support Agent
-
-Project Saadhna / BNB Marathon 2025 Submission
+# 🛡️ **GREENRESOLV AI — INTELLIGENT DEVELOPER SUPPORT AGENT**
+### *Project Saadhna / BNB Marathon 2025 Submission*
 
 Automating L1 Developer Support using Retrieval-Augmented Generation (RAG) on Google Cloud.
 
-💡 The Problem
+---
 
-In the fast-paced world of Web3 and Cloud development, Developer Relations (DevRel) teams are overwhelmed.
+## 📑 **TABLE OF CONTENTS**
+- [The Problem](#-the-problem)
+- [The Solution](#-the-solution--greenresolv-ai)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Screenshots](#-screenshots)
+- [Installation](#-installation--setup)
+- [Deployment](#-deployment--cloud-run)
+- [Challenges & Solutions](#-challenges--solutions)
+- [Roadmap](#-roadmap)
+- [Team](#-team)
+- [License](#-license)
 
-Repetitive Queries: 40% of support tickets are duplicates (e.g., "Transaction failed", "Division by zero").
+---
 
-Loss of Context: Standard chatbots hallucinate because they don't know the history of how a bug was actually fixed in the repo.
+## 💡 **THE PROBLEM**
+- 40% of developer support tickets are duplicates  
+- LLM chatbots hallucinate due to missing historical fix context  
+- Engineers waste time searching logs and past PRs  
+- High MTTR and lack of structured incident memory  
 
-High MTTR: Engineers waste hours searching through old logs to find previous solutions.
+---
 
-🚀 The Solution
+## 🚀 **THE SOLUTION — GREENRESOLV AI**
+GreenResolv is an AI-powered L1 Developer Support Agent that:
+- Stores every resolved ticket
+- Searches historical fixes using RAG + pgvector
+- Retrieves exact logs, diffs, and explanations
+- Synthesizes solutions using Vertex AI (Gemini/PaLM)
 
-GreenResolv is an AI Agent that "remembers" every past resolved ticket.
+---
 
-It uses a RAG (Retrieval-Augmented Generation) architecture to semantic search through historical logs stored in Cloud SQL, retrieves the exact technical fix (including code diffs), and uses Vertex AI to synthesize a solution for the user.
+## ⭐ **FEATURES**
+- 🧠 Vector search using **pgvector**  
+- ⚡ Instant **Admin ingestion/reset**  
+- 📝 Auto-generated **Markdown reports**  
+- ☁️ Serverless on **Cloud Run**  
+- 🔍 Accurate semantic retrieval  
 
-Key Features:
+---
 
-🧠 Contextual Memory: Uses pgvector to understand the meaning of an error, not just keywords.
+## ⚙️ **ARCHITECTURE**
+> Insert architecture diagram here
 
-🛠️ Automated Ingestion: Admin dashboard to ingest/reset knowledge base from JSON logs instantly.
+### Components
+- **Frontend (US-East1):** Streamlit UI  
+- **Brain (US-Central1):** Vertex AI (Gemini/PaLM)  
+- **Memory:** Cloud SQL PostgreSQL 15 + pgvector  
+- **Orchestration:** LangChain + Google PG Connector  
 
-📄 Report Generation: Auto-generates downloadable Markdown (.md) incident reports for documentation.
+---
 
-☁️ Cloud Native: Fully serverless architecture on Google Cloud Run.
+## 🛠️ **TECH STACK**
 
-⚙️ Architecture
+| Layer | Technology | Reason |
+|-------|------------|--------|
+| Frontend | Streamlit | Fast UI prototyping |
+| Backend | Vertex AI | Reliable LLMs |
+| Embeddings | Gecko 003 | High quality vectors |
+| Vector DB | Cloud SQL + pgvector | Unified SQL + vector search |
+| Connector | google-cloud-sql-pg | Secure IAM auth |
+| Deploy | Cloud Run | Serverless |
 
-(Replace this image link with your actual diagram)
+---
 
-The system follows a "Split-Brain" Architecture to optimize for Model Availability vs. User Latency:
+## 📸 **SCREENSHOTS**
+### 1. Chat Interface  
+*(Insert image)*  
+### 2. Markdown Report  
+*(Insert image)*  
 
-Frontend (US-East1): A Streamlit application hosted on Cloud Run handles user interaction.
+---
 
-The Brain (US-Central1): Logic is routed to us-central1 to access high-availability Foundation Models (PaLM 2 / Gemini).
+## 🔧 **INSTALLATION & SETUP**
 
-The Memory (US-Central1): A Cloud SQL (PostgreSQL 15) instance stores vector embeddings using the pgvector extension.
-
-Orchestration: LangChain connects the user query to the vector store and the LLM.
-
-🛠️ Tech Stack
-
-Component
-
-Technology
-
-Why we chose it?
-
-Frontend
-
-Streamlit
-
-Rapid UI development with built-in chat interfaces.
-
-LLM
-
-Vertex AI (PaLM 2 / Gemini)
-
-Enterprise-grade reliability and low latency.
-
-Embeddings
-
-Gecko (textembedding-gecko@003)
-
-Stable, high-dimensional vector generation.
-
-Vector DB
-
-Cloud SQL + pgvector
-
-Combines relational data with vector search in one managed service.
-
-Connector
-
-langchain-google-cloud-sql-pg
-
-Google's native library for secure IAM-based connections.
-
-Deploy
-
-Cloud Run
-
-Scale-to-zero serverless deployment.
-
-📸 Screenshots
-
-1. The Chat Interface
-(Insert screenshot of the agent solving a division by zero error)
-
-2. The Generated Report
-(Insert screenshot of the downloaded .md file)
-
-🔧 Installation & Setup
-
-Prerequisites
-
-Google Cloud Project with Billing Enabled.
-
-gcloud CLI installed.
-
-Python 3.11+.
-
-1. Clone the Repository
-
-git clone [https://github.com/Darbarvali/GreenResolv-AI.git](https://github.com/Darbarvali/GreenResolv-AI.git)
+### 1. Clone Repo
+```bash
+git clone https://github.com/Darbarvali/GreenResolv-AI.git
 cd GreenResolv-AI
+
 
 
 2. Environment Setup
