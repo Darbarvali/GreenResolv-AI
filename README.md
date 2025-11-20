@@ -86,37 +86,32 @@ GreenResolv is an AI-powered L1 Developer Support Agent that:
 
 ## 🔧 **INSTALLATION & SETUP**
 
-### 1. Clone Repo
+### 1️⃣ Clone Repo
 ```bash
 git clone https://github.com/Darbarvali/GreenResolv-AI.git
-cd GreenResolv-AI 
+cd GreenResolv-AI
+```
 
-
-
-### 2. Environment Setup
-
-# Install dependencies
+### 2️⃣ Environment Setup
+```bash
 pip install -r requirements.txt
-
-# Set Google Cloud Project ID
 export PROJECT_ID="your-project-id"
+```
 
+### 3️⃣ Database Setup
+```bash
+gcloud sql instances create greenresolv-db     --database-version=POSTGRES_15     --tier=db-f1-micro     --region=us-central1     --root-password=yourpassword
+```
 
-3. Database Setup
-
-Create a Cloud SQL instance with pgvector support:
-
-gcloud sql instances create greenresolv-db \
-    --database-version=POSTGRES_15 \
-    --tier=db-f1-micro \
-    --region=us-central1 \
-    --root-password=yourpassword
-
-
-4. Run Locally
-
+### 4️⃣ Run Locally
+```bash
 streamlit run app.py
+```
 
+## 🚢 Deployment — Cloud Run
+```bash
+gcloud run deploy greenresolv-ui   --source .   --region us-central1   --allow-unauthenticated   --set-env-vars GCP_PROJECT=$PROJECT_ID
+```
 
 🚢 Deployment (Google Cloud Run)
 
@@ -129,28 +124,23 @@ gcloud run deploy greenresolv-ui \
   --set-env-vars GCP_PROJECT=$PROJECT_ID ```
 
 
-🧠 Technical Challenges & Solutions
+## 🧠 Technical Challenges & Solutions
 
-1. Regional Model Availability
+### 1️⃣ Regional Model Availability
 
 Challenge: We initially deployed to us-east1, but discovered that specific Generative AI models (Gemini 1.5) were region-locked to us-central1 during the rollout phase, causing 404 Publisher Model Not Found errors.
 Solution: We implemented a "Cross-Region" logic where the UI runs in us-east1 for user proximity, but hardcodes API calls to us-central1 for the LLM, ensuring 100% uptime.
 
-2. Strict Schema Management
+### 2️⃣ Strict Schema Management
 
 Challenge: The langchain-google-cloud-sql-pg library enforces a strict table schema (requiring a langchain_id UUID column). Legacy tables caused the app to crash with ValueError: Id column not found.
 Solution: We built a "Self-Healing" ingestion pipeline. The Admin "Reset" button in the UI drops the existing table and lets the library strictly recreate it from scratch, ensuring schema compliance without manual SQL migration scripts.
 
-🔮 What's Next?
+## 🔮 What's Next?
+- GitHub Webhooks  
+- Multimodal screenshot support  
+- Slack bot integration  
+- Auto‑tuned retrieval  
 
-GitHub Webhooks: Automatically ingest new issues when they are closed on GitHub.
-
-Multimodal Support: Allow users to upload screenshots of their error logs using Gemini 1.5 Pro.
-
-Slack Integration: Deploy the agent as a Slack Bot for internal teams.
-
-👥 Team
-
-Darbarvali - Lead Developer / Cloud Architect
 
 Built with ❤️ for the BNB Marathon 2025.
