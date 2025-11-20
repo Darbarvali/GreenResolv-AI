@@ -1,0 +1,44 @@
+[
+  {
+    "ticket_id": "PG-2024-001",
+    "category": "Performance Optimization",
+    "issue_subject": "calculate_monthly_interest() is too slow on large datasets",
+    "issue_description": "The nightly batch job is timing out. The function 'calculate_monthly_interest' takes 45 minutes to run for 100k users. It seems to be processing one user at a time.",
+    "root_cause": "The function was using a PL/pgSQL 'FOR LOOP' to update records row-by-row (RBAR - Row By Agonizing Row).",
+    "resolution_summary": "Refactored the function to use a single set-based SQL 'UPDATE' statement with a JOIN. Execution time dropped from 45m to 12s.",
+    "git_commit": {
+      "hash": "8a2b3c4d",
+      "message": "fix(perf): replace cursor loop with bulk update in interest calc",
+      "file_path": "db/functions/finance/calculate_monthly_interest.sql",
+      "diff": "@@ -10,10 +10,5 @@\n BEGIN\n-  FOR user_rec IN SELECT * FROM users WHERE active = true LOOP\n-    UPDATE accounts \n-    SET balance = balance * 1.05 \n-    WHERE user_id = user_rec.id;\n-  END LOOP;\n+  UPDATE accounts a\n+  SET balance = balance * 1.05\n+  FROM users u\n+  WHERE a.user_id = u.id AND u.active = true;\n END;\n"
+    }
+  },
+  {
+    "ticket_id": "PG-2024-002",
+    "category": "Bug Fix / Logic Error",
+    "issue_subject": "division by zero in get_sales_ratio()",
+    "issue_description": "Production error logs show 'ERROR: division by zero' when generating sales reports for new stores that have 0 total visits.",
+    "root_cause": "The denominator (total_visits) is not checked for zero before division.",
+    "resolution_summary": "Added a NULLIF check to handle cases where total_visits is 0, returning NULL or 0 instead of crashing.",
+    "git_commit": {
+      "hash": "9c3d4e5f",
+      "message": "fix: handle div by zero in sales ratio report",
+      "file_path": "db/functions/reports/get_sales_ratio.sql",
+      "diff": "@@ -5,7 +5,7 @@\n DECLARE\n   ratio NUMERIC;\n BEGIN\n-  SELECT revenue / total_visits INTO ratio\n+  SELECT revenue / NULLIF(total_visits, 0) INTO ratio\n   FROM store_stats\n   WHERE store_id = _store_id;\n   \n   RETURN COALESCE(ratio, 0);"
+    }
+  },
+  {
+    "ticket_id": "PG-2024-003",
+    "category": "Security",
+    "issue_subject": "SECURITY DEFINER function missing search_path",
+    "issue_description": "Security audit flagged 'reset_user_password' as vulnerable. It runs with superuser privileges but doesn't set a secure search_path.",
+    "root_cause": "Malicious users could create a table named 'users' in their own schema and trick the function into updating the wrong table.",
+    "resolution_summary": "Forced the search_path to 'pg_catalog, public' to prevent schema hijacking.",
+    "git_commit": {
+      "hash": "1f2e3d4c",
+      "message": "sec: set secure search_path for admin functions",
+      "file_path": "db/functions/auth/reset_password.sql",
+      "diff": "@@ -1,5 +1,6 @@\n CREATE OR REPLACE FUNCTION reset_user_password(uid INT)\n RETURNS VOID\n SECURITY DEFINER\n+ SET search_path = admin, pg_temp\n AS $$\n BEGIN\n   UPDATE users SET pass_hash = '...' WHERE id = uid;"
+    }
+  }
+]
