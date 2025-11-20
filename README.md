@@ -48,7 +48,49 @@ GreenResolv is an AI-powered L1 Developer Support Agent that:
 ---
 
 ## ⚙️ **ARCHITECTURE**
-> Insert architecture diagram here
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/48f856b5-746e-4ab7-b2e7-98daabc16278" />
+flowchart TD
+
+    subgraph UI["🖥️ Streamlit Frontend (Cloud Run • us-east1)"]
+        A["User Query\nChat Input"]
+        B["Streamlit App\n(main.py)"]
+    end
+
+    subgraph Agent["🧠 RAG Agent (LangChain)"]
+        C["ChatVertexAI\nGemini 2.0 Flash"]
+        D["Vector Search Tool\n(search_past_solutions)"]
+        E["Conversation Memory\n(ConversationBufferMemory)"]
+    end
+
+    subgraph Embeddings["🔡 Embeddings Service"]
+        F["VertexAIEmbeddings\ntext-embedding-005"]
+    end
+
+    subgraph DB["🗄️ Cloud SQL (PostgreSQL 15)\n• pgvector\n• tickets_db.table: ticket_vectors"]
+        G["PostgresEngine\n+ VectorStore"]
+    end
+
+    subgraph Admin["⚙️ Admin Panel (Streamlit Sidebar)"]
+        H["Reset Knowledge Base\nDrop + Recreate Table"]
+        I["JSON Loader\n(past_tickets.json)"]
+    end
+
+    %% Flow
+    A --> B --> C
+    B --> D
+    C --> D
+    D --> G
+    B --> F
+    F --> G
+
+    H --> G
+    I --> G
+
+    G --> D
+    D --> C
+    C --> B --> A
+
+
 
 ### Components
 - **Frontend (US-East1):** Streamlit UI  
@@ -73,9 +115,11 @@ GreenResolv is an AI-powered L1 Developer Support Agent that:
 
 ## 📸 **SCREENSHOTS**
 ### 1. Chat Interface  
-*(Insert image)*  
+<img width="947" height="509" alt="image" src="https://github.com/user-attachments/assets/5811e187-a4be-4b93-9c4b-38b07d5ed4a5" />
+
 ### 2. Markdown Report  
-*(Insert image)*  
+<img width="836" height="450" alt="image" src="https://github.com/user-attachments/assets/913b3820-a87b-4d99-af9c-4f710a2d620e" />
+
 
 ---
 
