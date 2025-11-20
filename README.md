@@ -1,5 +1,5 @@
 # 🛡️ **GREENRESOLV AI — INTELLIGENT DEVELOPER SUPPORT AGENT**
-### *Project Saadhna / BNB Marathon 2025 Submission*
+### *BNB Marathon 2025 Submission*
 
 Automating L1 Developer Support using Retrieval-Augmented Generation (RAG) on Google Cloud.
 
