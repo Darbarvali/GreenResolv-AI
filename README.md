@@ -144,7 +144,7 @@ Solution: We built a "Self-Healing" ingestion pipeline. The Admin "Reset" button
 - Auto‑tuned retrieval
 
 ## 🌍 Live Deployment
-**App URL:** https://greenresolv-ui-12345.a.run.app
+**App URL:** [https://greenresolv-ui-12345.a.run.app](https://greenresolv-ui-172961617606.us-central1.run.app/)
 
 
 Built with ❤️ for the BNB Marathon 2025.
